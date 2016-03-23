@@ -14,14 +14,18 @@ namespace Anheledir.NET.UWP.ShiftRegister
       return value == GpioPinValue.High ? (byte)1 : (byte)0;
     }
 
-    public static GpioPinValue ToGpioPinValue(this bool value)
+    public static GpioPinValue ToGpioPinValue(this bool value, bool trueIsLow = false)
     {
-      return value ? GpioPinValue.High : GpioPinValue.Low;
+      return value ?
+        trueIsLow ? GpioPinValue.Low : GpioPinValue.High
+        : trueIsLow ? GpioPinValue.High : GpioPinValue.Low;
     }
 
-    public static GpioPinValue ToGpioPinValue(this int value)
+    public static GpioPinValue ToGpioPinValue(this int value, bool oneIsLow = false)
     {
-      return value == 1 ? GpioPinValue.High : GpioPinValue.Low;
+      return value == 1 ?
+        oneIsLow ? GpioPinValue.Low : GpioPinValue.High
+        : oneIsLow ? GpioPinValue.High : GpioPinValue.Low;
     }
   }
 }

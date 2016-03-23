@@ -1,5 +1,7 @@
 ﻿using Anheledir.NET.UWP.ShiftRegister;
+using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
 namespace ShiftRegister.UWP
@@ -8,27 +10,22 @@ namespace ShiftRegister.UWP
   {
     // Serial Data input
     private byte _ds;
-
     private GpioPin _DS;
 
     // Master re-clear
     private GpioPin _MR;
-
     private byte _mr;
 
     // Output Enable
     private GpioPin _OE;
-
     private byte _oe;
 
     // Shift Register Clock-Pin
     private GpioPin _SH_CP;
-
     private byte _shCP;
 
     // Storage Register Clock Pin (latch pin)
     private GpioPin _ST_CP;
-
     private byte _stCP;
 
     private int _registerAmount;
@@ -59,7 +56,7 @@ namespace ShiftRegister.UWP
       _isOutputEnabled = _oe == 0;
 
       InitGPIO();
-      Reset();
+      ResetPins();
       Commit();
     }
 
@@ -85,7 +82,20 @@ namespace ShiftRegister.UWP
       _ST_CP.Write(GpioPinValue.High);
     }
 
-    public void Reset()
+    public async Task MasterReset()
+    {
+      if (_MR != null)
+      {
+        _MR.Write(GpioPinValue.Low);
+        await Task.Delay(TimeSpan.FromMilliseconds(10));
+        _MR.Write(GpioPinValue.High);
+      } else
+      {
+        Debug.WriteLine("GPIO for Master Re-Clear not initialized");
+      }
+    }
+
+    public void ResetPins()
     {
       SetAll(GpioPinValue.Low);
     }
@@ -95,10 +105,14 @@ namespace ShiftRegister.UWP
       get { return _isOutputEnabled; }
       set
       {
-        if (_isOutputEnabled != value && _oe > 0)
+        if (_isOutputEnabled != value && _OE != null)
         {
-          _OE.Write((!value).ToGpioPinValue());
+          _OE.Write(value.ToGpioPinValue(true));
           _isOutputEnabled = value;
+        }
+        else if (_OE == null)
+        {
+          Debug.WriteLine("GPIO for Output Enabled not initialized");
         }
       }
     }
