@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>ShiftRegister.UWP</id>
-    <version>0.2.0</version>
+    <version>1.0.0</version>
     <authors>Gordon Breuer</authors>
     <owners>Gordon Breuer</owners>
     <licenseUrl>https://raw.githubusercontent.com/Anheledir/ShiftRegister.UWP/master/LICENSE</licenseUrl>
@@ -11,9 +11,6 @@
     <description>With this library you can control shift registers like the 74HC595 easily within your IoT enabled Windows Universal App</description>
     <releaseNotes>Initialize release of the Library</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>IoT CSharp shifter shift register 74HC595 raspberry</tags>
-    <dependencies>
-      <dependency id="SampleDependency" version="1.0" />
-    </dependencies>
+    <tags>IoT CSharp shifter shift register 74HC595 raspberry arduino</tags>
   </metadata>
 </package>
