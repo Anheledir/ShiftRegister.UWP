@@ -32,16 +32,40 @@ namespace ShiftRegister.UWP
     private int[] _shiftRegisters;
     private bool _isOutputEnabled;
 
+    /// <summary>
+    /// Initialize a new Instance of the Shift Register Library to work with only one Register
+    /// You should connect OE to GND and MR to Vcc (positive supply voltage)
+    /// </summary>
+    /// <param name="DS">Pin for Serial Data input</param>
+    /// <param name="ST_CP">Pin for Storage Register Clock (latch)</param>
+    /// <param name="SH_CP">Pin for Shift Register Clock</param>
     public ShiftRegister(byte DS, byte ST_CP, byte SH_CP) : this(DS, ST_CP, SH_CP, 1)
     {
       Debug.WriteLine("Using default for numberOfRegisters = 1");
     }
 
+    /// <summary>
+    /// Initialize a new Instance of the Shift Register Library to work with more than one Register
+    /// You should connect OE to GND and MR to Vcc (positive supply voltage)
+    /// </summary>
+    /// <param name="DS">Pin for Serial Data input</param>
+    /// <param name="ST_CP">Pin for Storage Register Clock (latch)</param>
+    /// <param name="SH_CP">Pin for Shift Register Clock</param>
+    /// <param name="numberOfRegisters">Number of serial-connected shift registers</param>
     public ShiftRegister(byte DS, byte ST_CP, byte SH_CP, int numberOfRegisters) : this(DS, ST_CP, SH_CP, numberOfRegisters, 0, 0)
     {
       Debug.WriteLine("Using default for OE = 0 and MR = 0");
     }
 
+    /// <summary>
+    /// Initialize a new Instance of the Shift Register Library to work with more than one Register
+    /// </summary>
+    /// <param name="DS">Pin for Serial Data input</param>
+    /// <param name="ST_CP">Pin for Storage Register Clock (latch)</param>
+    /// <param name="SH_CP">Pin for Shift Register Clock</param>
+    /// <param name="numberOfRegisters">Number of serial-connected shift registers</param>
+    /// <param name="OE">Pin for Output Enabled (active Low)</param>
+    /// <param name="MR">Pin for Master Re-Clear (active Low)</param>
     public ShiftRegister(byte DS, byte ST_CP, byte SH_CP, int numberOfRegisters, byte OE, byte MR)
     {
       _ds = DS;
@@ -82,6 +106,10 @@ namespace ShiftRegister.UWP
       _ST_CP.Write(GpioPinValue.High);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public async Task MasterReset()
     {
       if (_MR != null)
