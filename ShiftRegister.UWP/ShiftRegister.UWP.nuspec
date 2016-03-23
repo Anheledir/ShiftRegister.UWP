@@ -13,4 +13,9 @@
     <copyright>Copyright 2016</copyright>
     <tags>IoT CSharp shifter shift register 74HC595 raspberry arduino</tags>
   </metadata>
+
+  <files>
+    <file src="**\ShiftRegister.UWP.dll" target="lib\uap10.0\" />
+  </files>
+
 </package>
