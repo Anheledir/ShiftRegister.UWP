@@ -1,34 +1,43 @@
-﻿using Anheledir.NET.UWP.ShiftRegister;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 
-namespace ShiftRegister.UWP
+namespace Anheledir.NET.UWP.IoT
 {
   public class ShiftRegister
   {
-    // Serial Data input
-    private byte _ds;
+    /// <summary>
+    /// GPIO-Pin number for Serial Data Input
+    /// </summary>
+    public byte DS { get; internal set; }
     private GpioPin _DS;
 
-    // Master re-clear
+    /// <summary>
+    /// GPIO-Pin for Master Re-Clear
+    /// </summary>
+    public byte MR { get; internal set; }
     private GpioPin _MR;
-    private byte _mr;
 
-    // Output Enable
+    /// <summary>
+    /// GPIO-Pin for Output Enable
+    /// </summary>
+    public byte OE { get; internal set; }
     private GpioPin _OE;
-    private byte _oe;
 
-    // Shift Register Clock-Pin
+    /// <summary>
+    /// GPIO-Pin for the Shift Register Clock
+    /// </summary>
+    public byte SH_CP { get; internal set; }
     private GpioPin _SH_CP;
-    private byte _shCP;
 
-    // Storage Register Clock Pin (latch pin)
+    /// <summary>
+    /// GPIO-Pin for the Storage Register Clock (latch)
+    /// </summary>
+    public byte ST_CP { get; internal set; }
     private GpioPin _ST_CP;
-    private byte _stCP;
 
-    private int _registerAmount;
+    public int RegisterAmount { get; internal set; }
     private int[] _shiftRegisters;
     private bool _isOutputEnabled;
 
@@ -68,16 +77,16 @@ namespace ShiftRegister.UWP
     /// <param name="MR">Pin for Master Re-Clear (active Low)</param>
     public ShiftRegister(byte DS, byte ST_CP, byte SH_CP, int numberOfRegisters, byte OE, byte MR)
     {
-      _ds = DS;
-      _stCP = ST_CP;
-      _shCP = SH_CP;
-      _oe = OE;
-      _mr = MR;
+      this.DS = DS;
+      this.ST_CP = ST_CP;
+      this.SH_CP = SH_CP;
+      this.OE = OE;
+      this.MR = MR;
 
-      _registerAmount = numberOfRegisters;
-      _shiftRegisters = new int[_registerAmount];
+      RegisterAmount = numberOfRegisters;
+      _shiftRegisters = new int[RegisterAmount];
 
-      _isOutputEnabled = _oe == 0;
+      _isOutputEnabled = this.OE == 0;
 
       InitGPIO();
       ResetPins();
@@ -92,7 +101,7 @@ namespace ShiftRegister.UWP
     {
       _ST_CP.Write(GpioPinValue.Low);
 
-      for (int i = _registerAmount - 1; i >= 0; i--)
+      for (int i = RegisterAmount - 1; i >= 0; i--)
       {
         for (int j = 8 - 1; j >= 0; j--)
         {
@@ -107,7 +116,7 @@ namespace ShiftRegister.UWP
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <returns></returns>
     public async Task MasterReset()
@@ -147,7 +156,7 @@ namespace ShiftRegister.UWP
 
     public void SetAll(GpioPinValue value)
     {
-      for (int i = _registerAmount * 8 - 1; i >= 0; i--)
+      for (int i = RegisterAmount * 8 - 1; i >= 0; i--)
       {
         SetPin(i, value);
       }
@@ -181,21 +190,21 @@ namespace ShiftRegister.UWP
         throw new NoGPIOControllerFoundException("There is no GPIO controller on this device.");
       }
 
-      _DS = gpio.OpenPin(_ds);
+      _DS = gpio.OpenPin(DS);
       _DS.Write(GpioPinValue.Low);
       _DS.SetDriveMode(GpioPinDriveMode.Output);
 
-      _SH_CP = gpio.OpenPin(_shCP);
+      _SH_CP = gpio.OpenPin(SH_CP);
       _SH_CP.Write(GpioPinValue.Low);
       _SH_CP.SetDriveMode(GpioPinDriveMode.Output);
 
-      _ST_CP = gpio.OpenPin(_stCP);
+      _ST_CP = gpio.OpenPin(ST_CP);
       _ST_CP.Write(GpioPinValue.Low);
       _ST_CP.SetDriveMode(GpioPinDriveMode.Output);
 
-      if (_oe > 0)
+      if (OE > 0)
       {
-        _OE = gpio.OpenPin(_oe);
+        _OE = gpio.OpenPin(OE);
         _OE.Write(GpioPinValue.High);
         _OE.SetDriveMode(GpioPinDriveMode.Output);
       }
@@ -205,9 +214,9 @@ namespace ShiftRegister.UWP
         Debug.WriteLine("GPIO for Output Enabled not initialized");
       }
 
-      if (_mr > 0)
+      if (MR > 0)
       {
-        _MR = gpio.OpenPin(_mr);
+        _MR = gpio.OpenPin(MR);
         _MR.Write(GpioPinValue.High);
         _MR.SetDriveMode(GpioPinDriveMode.Output);
       }

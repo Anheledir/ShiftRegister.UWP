@@ -1,4 +1,4 @@
-﻿namespace Anheledir.NET.UWP.ShiftRegister
+﻿namespace Anheledir.NET.UWP.IoT
 {
   public class NoGPIOControllerFoundException : System.Exception
   {

@@ -1,6 +1,6 @@
 ﻿using Windows.Devices.Gpio;
 
-namespace Anheledir.NET.UWP.ShiftRegister
+namespace Anheledir.NET.UWP.IoT
 {
   public static class GpioHelper
   {
