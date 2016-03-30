@@ -7,7 +7,7 @@
     <ProjectGuid>{57E37F86-D2F5-40EF-81C3-B51915823D9E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Anheledir.NET.UWP.ShiftRegister</RootNamespace>
+    <RootNamespace>Anheledir.NET.UWP.IoT</RootNamespace>
     <AssemblyName>ShiftRegister.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
